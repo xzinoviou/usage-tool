@@ -2,14 +2,11 @@
 A hotel usage tool, for calculating 
 usage based on room categories rules. 
 
---------------------
-prereqs for running
--------------------
+-------------------------
+prerequisites
+-------------------------
 java version 11
 maven 3.6+
-
-
-
 
 -----------------------
 running the application
@@ -26,7 +23,7 @@ java -jar target/usage-tool-0.0.1-SNAPSHOT.jar
 
 
 -------------
-API end-point
+API
 -------------
 exposed on port: 8080
 
