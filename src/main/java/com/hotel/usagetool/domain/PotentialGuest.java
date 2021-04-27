@@ -20,6 +20,6 @@ public class PotentialGuest {
     private boolean availableForReservation;
 
     public enum Type {
-        PREMIUM, ECONOMY, UPGRADE
+        PREMIUM, ECONOMY, UPGRADED
     }
 }

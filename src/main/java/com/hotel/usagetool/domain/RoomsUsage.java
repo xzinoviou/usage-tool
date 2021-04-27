@@ -15,6 +15,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RoomsUsage {
 
+    private int rooms;
     private int reservedRooms;
     private double totalUsage;
+
+    public void increaseUsageBy(double amount) {
+        this.totalUsage += amount;
+    }
+
+    public void incrementReservedRoomsBy(int newReservations) {
+        this.reservedRooms += newReservations;
+    }
 }
