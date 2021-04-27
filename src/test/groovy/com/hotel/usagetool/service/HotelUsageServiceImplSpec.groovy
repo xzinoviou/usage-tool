@@ -1,6 +1,8 @@
 package com.hotel.usagetool.service
 
+import com.hotel.usagetool.domain.HotelUsageRequest
 import spock.lang.Specification
+import spock.lang.Unroll
 
 class HotelUsageServiceImplSpec extends Specification {
 
@@ -15,73 +17,27 @@ class HotelUsageServiceImplSpec extends Specification {
         testClass = null
     }
 
+    @Unroll
+    def "calculate hotel usage with arbitrate premium & economy rooms & prices"() {
+        given:"a payload of arbitrate premium & economy rooms and a fixed list of prices"
+        def payload = new HotelUsageRequest(
+                freePremiumRooms: freePremiumRooms,
+                freeEconomyRooms: freeEconomyRooms,
+                potentialGuestPrices: prices)
 
-    def "calculate hotel usage with 3 premium rooms & 3 economy"() {
-        when:
-        def result = testClass.calculateHotelUsage(3, 3, prices)
+        expect:"reservations to be made according to the rules"
+        def result = testClass.calculateHotelUsage(payload.freePremiumRooms, payload.freeEconomyRooms, prices)
+        result.premium.reservedRooms == reservedPremiumRooms
+        result.premium.totalUsage == premiumUsage
+        result.economy.reservedRooms == reservedEconomyRooms
+        result.economy.totalUsage == economyUsage
 
-        then:
-        with(result.premium) {
-            rooms == 3
-            reservedRooms == 3
-            totalUsage == 738
-        }
-
-        with(result.economy) {
-            rooms == 3
-            reservedRooms == 3
-            totalUsage == 167.99
-        }
-    }
-
-    def "calculate hotel usage with 7 premium rooms & 5 economy"() {
-        when:
-        def result = testClass.calculateHotelUsage(7, 5, prices)
-
-        then:
-        with(result.premium) {
-            rooms == 7
-            reservedRooms == 7
-            totalUsage == 1153.99
-        }
-
-        with(result.economy) {
-            rooms == 5
-            reservedRooms == 3
-            totalUsage == 90
-        }
-    }
-
-    def "calculate hotel usage with 2 premium rooms & 7 economy"() {
-        when:
-        def result = testClass.calculateHotelUsage(2,7, prices)
-
-        then:
-        with(result.premium) {
-            reservedRooms == 2
-            totalUsage == 583
-        }
-
-        with(result.economy) {
-            reservedRooms == 4
-            totalUsage == 189.99
-        }
-    }
-
-    def "calculate hotel usage with 7 premium rooms & 1 economy"() {
-        when:
-        def result = testClass.calculateHotelUsage(7, 1, prices)
-
-        then:
-        with(result.premium) {
-            reservedRooms == 7
-            totalUsage == 1153.99
-        }
-
-        with(result.economy) {
-            reservedRooms == 1
-            totalUsage == 45
-        }
+        where:"results are verified"
+        freePremiumRooms | reservedPremiumRooms | premiumUsage | freeEconomyRooms | reservedEconomyRooms | economyUsage
+        3                | 3                    | 738          | 3                | 3                    | 167.99
+        7                | 7                    | 1153.99      | 5                | 3                    | 90
+        2                | 2                    | 583          | 7                | 4                    | 189.99
+        7                | 7                    | 1153.99      | 1                | 1                    | 45
     }
 
 
