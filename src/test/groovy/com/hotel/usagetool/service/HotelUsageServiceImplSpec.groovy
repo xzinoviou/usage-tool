@@ -5,6 +5,7 @@ import spock.lang.Specification
 class HotelUsageServiceImplSpec extends Specification {
 
     private HotelUsageService testClass;
+    private static def prices = [23, 45, 155, 374, 22, 99.99, 100, 101, 115, 209]
 
     void setup() {
         testClass = new HotelUsageServiceImpl()
@@ -16,12 +17,8 @@ class HotelUsageServiceImplSpec extends Specification {
 
 
     def "calculate hotel usage with 3 premium rooms & 3 economy"() {
-
-        given:
-        def numbers = [23, 45, 155, 374, 22, 99.99, 100, 101, 115, 209]
-
         when:
-        def result = testClass.calculateHotelUsage(3, 3, numbers)
+        def result = testClass.calculateHotelUsage(3, 3, prices)
 
         then:
         with(result.premium) {
@@ -38,12 +35,8 @@ class HotelUsageServiceImplSpec extends Specification {
     }
 
     def "calculate hotel usage with 7 premium rooms & 5 economy"() {
-
-        given:
-        def numbers = [23, 45, 155, 374, 22, 99.99, 100, 101, 115, 209]
-
         when:
-        def result = testClass.calculateHotelUsage(7, 5, numbers)
+        def result = testClass.calculateHotelUsage(7, 5, prices)
 
         then:
         with(result.premium) {
@@ -60,12 +53,8 @@ class HotelUsageServiceImplSpec extends Specification {
     }
 
     def "calculate hotel usage with 2 premium rooms & 7 economy"() {
-
-        given:
-        def numbers = [23, 45, 155, 374, 22, 99.99, 100, 101, 115, 209]
-
         when:
-        def result = testClass.calculateHotelUsage(2,7, numbers)
+        def result = testClass.calculateHotelUsage(2,7, prices)
 
         then:
         with(result.premium) {
@@ -80,12 +69,8 @@ class HotelUsageServiceImplSpec extends Specification {
     }
 
     def "calculate hotel usage with 7 premium rooms & 1 economy"() {
-
-        given:
-        def numbers = [23, 45, 155, 374, 22, 99.99, 100, 101, 115, 209]
-
         when:
-        def result = testClass.calculateHotelUsage(7, 1, numbers)
+        def result = testClass.calculateHotelUsage(7, 1, prices)
 
         then:
         with(result.premium) {

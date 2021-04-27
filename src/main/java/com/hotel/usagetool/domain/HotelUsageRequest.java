@@ -2,6 +2,8 @@ package com.hotel.usagetool.domain;
 
 import lombok.Getter;
 
+import java.util.List;
+
 /**
  * Represents the request sent from the hotel,<br>
  * for the usage calculation , by given free rooms <br>
@@ -13,6 +15,6 @@ public class HotelUsageRequest {
 
     private int freePremiumRooms;
     private int freeEconomyRooms;
-    private Number[] potentialGuestPrices;
+    private List<Number> potentialGuestPrices;
 
 }
