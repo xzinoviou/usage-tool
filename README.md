@@ -49,3 +49,11 @@ responses:
         "totalUsage": 354.24
         }
 }
+
+400 bad request
+{
+    "errorCode": "1002",
+    "description": "Negative Integers or Zeros are not allowed",
+    "path": "/hotel-usage/calculate",
+    "timestamp": "2021-04-27T18:33:51.788779Z"
+}
