@@ -11,8 +11,8 @@ import lombok.Getter;
 @Getter
 public class HotelUsageRequest {
 
-    int freePremiumRooms;
-    int freeEconomyRooms;
-    Number[] potentialGuestPrices;
+    private int freePremiumRooms;
+    private int freeEconomyRooms;
+    private Number[] potentialGuestPrices;
 
 }
