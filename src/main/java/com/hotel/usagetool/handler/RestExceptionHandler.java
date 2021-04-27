@@ -31,5 +31,4 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .timestamp(Instant.now().toString())
                 .build();
     }
-
 }

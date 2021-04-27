@@ -5,7 +5,8 @@ package com.hotel.usagetool.error;
  */
 public enum ApplicationError implements Error {
 
-    INVALID_DATA_FORMAT("1001", "Invalid data format");
+    INVALID_DATA_ERROR("1001", "Invalid data input"),
+    NEGATIVE_INTEGERS_ZERO_ERROR("1002", "Negative Integers or Zero are not allowed");
 
     private final String errorCode;
 
