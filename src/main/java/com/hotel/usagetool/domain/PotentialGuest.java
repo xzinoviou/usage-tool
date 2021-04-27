@@ -10,10 +10,10 @@ import lombok.Data;
 public class PotentialGuest {
 
     private double price;
-    private Type type;
+    private GuestType type;
     private boolean availableForReservation;
 
-    public enum Type {
-        PREMIUM, ECONOMY
+    public enum GuestType {
+        PREMIUM, ECONOMY, UPGRADE
     }
 }
