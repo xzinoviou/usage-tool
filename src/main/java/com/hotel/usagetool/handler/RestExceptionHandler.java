@@ -19,7 +19,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ApplicationException.class)
     protected ResponseEntity<Object> handleApplicationException(HttpServletRequest request, ApplicationException ex) {
-        ErrorResponse errorResponse = buildErrorResponse(request, ex);
+        var errorResponse = buildErrorResponse(request, ex);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
