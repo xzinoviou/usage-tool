@@ -2,6 +2,7 @@ package com.hotel.usagetool.service;
 
 import com.hotel.usagetool.domain.HotelUsage;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -21,5 +22,5 @@ public interface HotelUsageService {
      *                             All types extending the Number class are acceptable.
      * @return the estimation of the hotel usage.
      */
-    HotelUsage calculateHotelUsage(int freePremiumRooms, int freeEconomyRooms, List<Number> potentialGuestPrices);
+    HotelUsage calculateHotelUsage(int freePremiumRooms, int freeEconomyRooms, List<BigDecimal> potentialGuestPrices);
 }

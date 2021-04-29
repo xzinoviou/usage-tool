@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static com.hotel.usagetool.error.ApplicationError.NEGATIVE_INTEGERS_ZERO_ERROR;
@@ -50,7 +51,7 @@ public class HotelUsageControllerValidator implements Validator {
             throw new ApplicationException(NEGATIVE_INTEGERS_ZERO_ERROR);
     }
 
-    private void arePricesValid(List<Number> prices) {
+    private void arePricesValid(List<BigDecimal> prices) {
         prices.forEach(
                 price -> {
                     if (price.doubleValue() <= 0)

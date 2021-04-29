@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 /**
  * The RoomsUsage represents the total usage <br>
  * for a number of rooms.
@@ -17,10 +19,10 @@ public class RoomsUsage {
 
     private int rooms;
     private int reservedRooms;
-    private double totalUsage;
+    private BigDecimal totalUsage;
 
-    public void increaseUsageBy(double amount) {
-        this.totalUsage += amount;
+    public void increaseUsageBy(BigDecimal amount) {
+        this.totalUsage = this.totalUsage.add(amount);
     }
 
     public void incrementReservedRoomsBy(int newReservations) {

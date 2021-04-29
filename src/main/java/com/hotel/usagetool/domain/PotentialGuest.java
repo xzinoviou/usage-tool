@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 /**
  * Represents the potential guest <br>
  * for use in estimating the hotel usage.
@@ -15,7 +17,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PotentialGuest {
 
-    private double price;
+    private BigDecimal price;
     private Type type;
     private boolean availableForReservation;
 

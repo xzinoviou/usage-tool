@@ -5,9 +5,12 @@ import com.hotel.usagetool.domain.PotentialGuest;
 import com.hotel.usagetool.domain.RoomsUsage;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
+import static com.hotel.usagetool.constants.Constant.ONE_ROOM;
 import static com.hotel.usagetool.constants.Constant.PREMIUM_PRICE_LIMIT;
 import static com.hotel.usagetool.domain.PotentialGuest.Type.ECONOMY;
 import static com.hotel.usagetool.domain.PotentialGuest.Type.PREMIUM;
@@ -20,11 +23,19 @@ public class HotelUsageServiceImpl implements HotelUsageService {
 
     @Override
     public HotelUsage calculateHotelUsage(int freePremiumRooms, int freeEconomyRooms,
-                                          List<Number> potentialGuestPrices) {
-        List<PotentialGuest> potentialGuests = convertPricesToPotentialGuests(potentialGuestPrices);
+                                          List<BigDecimal> potentialGuestPrices) {
+        List<BigDecimal> sortedByMaxPrices = sortPricesDesc(potentialGuestPrices);
+        List<PotentialGuest> potentialGuests = convertPricesToPotentialGuests(sortedByMaxPrices);
 
-        RoomsUsage premium = RoomsUsage.builder().rooms(freePremiumRooms).build();
-        RoomsUsage economy = RoomsUsage.builder().rooms(freeEconomyRooms).build();
+        RoomsUsage premium = RoomsUsage.builder()
+                .totalUsage(BigDecimal.ZERO)
+                .rooms(freePremiumRooms)
+                .build();
+
+        RoomsUsage economy = RoomsUsage.builder()
+                .totalUsage(BigDecimal.ZERO)
+                .rooms(freeEconomyRooms)
+                .build();
 
         return calculateHotelTotalUsage(premium, economy, potentialGuests);
     }
@@ -32,8 +43,8 @@ public class HotelUsageServiceImpl implements HotelUsageService {
     /**
      * Calculate the hotel total usage in both premium  economy rooms , by a list of potentialGuests.
      *
-     * @param premium the given premium usage.
-     * @param economy the given economy usage.
+     * @param premium         the given premium usage.
+     * @param economy         the given economy usage.
      * @param potentialGuests the given potential guests list.
      * @return the calculated hotel total usage.
      */
@@ -63,16 +74,23 @@ public class HotelUsageServiceImpl implements HotelUsageService {
     /**
      * Convert the list of prices to a list of Potential guests , for ease of manipulation <br>
      * in reservations and hotel usage calculation.
+     *
      * @param potentialGuestPrices the given list of potential guests prices.
      * @return the list of potential guests.
      */
-    private List<PotentialGuest> convertPricesToPotentialGuests(List<Number> potentialGuestPrices) {
+    private List<PotentialGuest> convertPricesToPotentialGuests(List<BigDecimal> potentialGuestPrices) {
         return potentialGuestPrices.stream()
-                .mapToDouble(Number::doubleValue)
-                .boxed()
-                .sorted((price1, price2) -> Double.compare(price2, price1))
                 .map(this::buildPotentialGuest)
                 .collect(Collectors.toList());
+    }
+
+    private List<BigDecimal> sortPricesDesc(List<BigDecimal> prices) {
+        return prices.stream().sorted((price1, price2) -> comparePrices().apply(price1, price2))
+                .collect(Collectors.toList());
+    }
+
+    private BiFunction<BigDecimal, BigDecimal, Integer> comparePrices() {
+        return (x, y) -> y.compareTo(x);
     }
 
     /**
@@ -81,7 +99,7 @@ public class HotelUsageServiceImpl implements HotelUsageService {
      * @param price the given price.
      * @return the new instance of PotentialGuest.
      */
-    private PotentialGuest buildPotentialGuest(Double price) {
+    private PotentialGuest buildPotentialGuest(BigDecimal price) {
         return PotentialGuest.builder()
                 .price(price)
                 .type(selectCustomerType(price))
@@ -95,8 +113,8 @@ public class HotelUsageServiceImpl implements HotelUsageService {
      * @param price the given price.
      * @return the PotentialGuest.Type .
      */
-    private PotentialGuest.Type selectCustomerType(Double price) {
-        return price >= PREMIUM_PRICE_LIMIT ? PREMIUM : ECONOMY;
+    private PotentialGuest.Type selectCustomerType(BigDecimal price) {
+        return price.doubleValue() >= PREMIUM_PRICE_LIMIT ? PREMIUM : ECONOMY;
     }
 
     /**
@@ -172,9 +190,9 @@ public class HotelUsageServiceImpl implements HotelUsageService {
      * @param roomsUsage the given rooms usage.
      * @param price      the given price for the reservation.
      */
-    private void roomUsageReservation(RoomsUsage roomsUsage, Double price) {
+    private void roomUsageReservation(RoomsUsage roomsUsage, BigDecimal price) {
         roomsUsage.increaseUsageBy(price);
-        roomsUsage.incrementReservedRoomsBy(1);
+        roomsUsage.incrementReservedRoomsBy(ONE_ROOM);
     }
 
     /**

@@ -2,6 +2,7 @@ package com.hotel.usagetool.domain;
 
 import lombok.Getter;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -15,6 +16,6 @@ public class HotelUsageRequest {
 
     private int freePremiumRooms;
     private int freeEconomyRooms;
-    private List<Number> potentialGuestPrices;
+    private List<BigDecimal> potentialGuestPrices;
 
 }
