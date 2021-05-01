@@ -53,6 +53,28 @@ class HotelUsageControllerSpec extends Specification {
                 payload.freeEconomyRooms,
                 payload.potentialGuestPrices
         )
+    }
 
+    def "try to get hotel with invalid data supplied returns 400 http status"() {
+
+        given:
+        def payload = new HotelUsageRequest(
+                freePremiumRooms: -1,
+                freeEconomyRooms: -100,
+                potentialGuestPrices: prices
+        )
+
+        when:
+        mockMvc.perform(MockMvcRequestBuilders.post("/hotel-usage/calculate")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(payload)))
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+
+        then:
+        0 * hotelUsageService.calculateHotelUsage(
+                payload.freePremiumRooms,
+                payload.freeEconomyRooms,
+                payload.potentialGuestPrices
+        )
     }
 }

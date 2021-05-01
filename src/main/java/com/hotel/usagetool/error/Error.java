@@ -6,7 +6,7 @@ package com.hotel.usagetool.error;
  */
 public interface Error {
 
-    String getErrorCode();
+    int getCode();
 
     String getDescription();
 }
